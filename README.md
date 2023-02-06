@@ -1,47 +1,24 @@
 # Coding Challenge
-
-Welcome to the challenge! In this task you will get a glimpse into the typical challenges you would be facing working day to day within the Machine Translation team.
-
-As a research engineer at Lengoo you will be creating and maintaning different services, supporting the machine translation automation and serving pipelines. This includes pre-processing data, creating and improving the performance of data microservices, defining deployment processes, as well as implementing and productionizing prototypes.
-
 ## I. Data Preprocessing Pipeline
-The TMX (translation memory exchange) file format, a type of XML, is typical to the translation industry and contains previously translated sentences. It is one of the data sources that can be used in the machine translation model training process. A sample TMX file is provided under `resources/tmx-file.tmx`
+This preprocessing pipeline is made of lxml library for efficient file reading and multiprocessing to clear the data 
+in parallel.  
+After preprocessing the output file is stored in parquet format. This format was chosen mainly because 
+of its read/write efficiency which is highly appreciate with large volumes of data.  
+To run the code in local venv simply run this commands
+```
+pip install -r requirements.txt
+python main.py --tmx-file ./resources/tmx-file.tmx --output ./results/output
+```
+It is also possible to pass a __processes__ argument. This argument stands for the amount of processes to run. By 
+default this value equals to the amount of cpu available.  
 
-As first part of the challenge, please implement a small pipeline for *extracting*, *cleaning* and *writing* the translated segments stored in the TMX file.
-This should be completed in a scalable manner, considering large volumes of data.
-
-### I.1 Extracting
-Given a TMX file, parallel translated segments should be extracted and prepared for the next step.
-
-### I.2 Cleaning
-Typically, real historic translations from TMX files contain noise and artefacts from e.g. a content management system, so it is important to clean and extract the meaningful and contentful data before feeding it into the machine translation model.
-
-* __Examples of non-clean segments__:
-	* XML elements mid-segment:
-		* `<seg>This segment <x/> is <g>great</g></seg>`
-	* Escaped HTML tags mid-segment:
-		* `<seg> This segment is &lt;br/&gt; great</seg>`
-	* Other markup within text:
-		* `<seg>This segment is %link_start%great%link_end%. </seg>`
-	* Correct extraction in all cases:
-		* "This segment is great."
-
-Further noise may be discovered by empirical observation of the data. As this noise is always very customer-specific and can contain various, unpredictable elements, your code base should be easily extensible with further rules by using some neat code structures and interfaces.
-
-### I.3 Writing
-The queued segments are cleaned and utlimately written to any prefered parallel data structure/dump.
-
-### I.4 Scaling
-The same TMX preprocessing pipeline should be also runnable locally (RAM-limited) on a bigger data set. Your solution will be evaluated on the [ParaCrawl TMX files](https://object.pouta.csc.fi/OPUS-ParaCrawl/v1/tmx/de-en.tmx.gz), which contain 36.4M sentences. The priority for this step is performance and runnability, not the cleaning rules.
-
-### Requirements
-* __Functional Requirements__:
-	* Command Line Interface (CLI)
-	* Takes a TMX file and produces parallel file structure:
-		* Example command: `$ python extract.py --tmx-file file.tmx --output “./myfolder/output”`
-* __Expected Output__:
-	* File object produced in `/myfolder`
-
+It is also possible to run the code using docker. But you shouldn't forget about mounting the input and output files 
+volumes.
+```
+docker build . -t test-cleaner
+docker run --rm -it -v $PWD/resources:/opt/workspace/resources -v $PWD/results:/opt/workspace/results test-cleaner python main.py --tmx-file ./resources/tmx-file.tmx --output ./results/output
+```
+If you are interested in deeper code understanding look at the code. It has comments.
 ## II. Research and Prototyping
 
 Misalignment, i.e., parallel sentence pairs that are not accurate translations of each other, is a common problem that occurs even in well-curated datasets.
