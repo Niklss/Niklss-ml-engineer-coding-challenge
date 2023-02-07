@@ -20,7 +20,7 @@ if __name__ == "__main__":
     if input_file.is_file() and input_file.name.endswith('.tmx'): # Check the input file existence and format
         output_path = pathlib.Path(args.output)
         output_path.parent.mkdir(parents=True, exist_ok=True) # Create directory if not exists for output
-
+        logging.info(msg='Starting process...')
         tmx_cleaner = TMXCleaner(args.tmx_file, args.output, args.processes)
         tmx_cleaner.run()
         logging.info(msg='Completed successfully')
