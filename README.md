@@ -2,7 +2,7 @@
 ## I. Data Preprocessing Pipeline
 This preprocessing pipeline is made of lxml library for efficient file reading and multiprocessing to clear the data 
 in parallel.  
-After preprocessing the output file is stored in parquet format. This format was chosen mainly because 
+After preprocessing the output file is stored in parquet dataset format. This format was chosen mainly because 
 of its read/write efficiency which is highly appreciate with large volumes of data.  
 To run the code in local venv simply run this commands
 ```
@@ -18,7 +18,8 @@ volumes.
 docker build . -t test-cleaner
 docker run --rm -it -v $PWD/resources:/opt/workspace/resources -v $PWD/results:/opt/workspace/results test-cleaner python main.py --tmx-file ./resources/tmx-file.tmx --output ./results/output
 ```
-If you are interested in deeper code understanding look at the code. It has comments.
+If you are interested in deeper code understanding look at the code. It has comments.  
+Tried do my best, but it still requires about 5GB of RAM to process 20M rows. 
 ## II. Research and Prototyping
 
 Misalignment, i.e., parallel sentence pairs that are not accurate translations of each other, is a common problem that occurs even in well-curated datasets.
