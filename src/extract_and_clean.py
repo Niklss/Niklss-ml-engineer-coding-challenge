@@ -109,7 +109,7 @@ class TMXCleaner:
             while slice:  # Check on dataset end
                 input_slices = [(list(self.chunks(file_generator, size=self.chunk_size)), counter + i) for i in
                                 range(self.processes)]  # Slices of rows with file_id for parquet dataset
-                [pool.apply_async(self._clean_and_write, args=slice) for slice in input_slices if slice[0]]
+                [pool.apply_async(self._clean_and_write, args=slice).get() for slice in input_slices if slice[0]]
                 counter += self.processes
                 slice = input_slices[-1][0]  # Check if empty
                 logging.info(msg=f'Processed {counter * self.chunk_size} rows.')

@@ -27,11 +27,15 @@ for the amount of rows to pass to a process and the amount of rows stored in one
 dataset file.
 
 It is also possible to run the code using docker. But you shouldn't forget about 
-mounting the input and output file volumes. 
+mounting the input and output file volumes.
 
 ```
 docker build . -t test-cleaner
 docker run --rm -it -v $PWD/resources:/opt/workspace/resources -v $PWD/results:/opt/workspace/results test-cleaner python tmx_preprocessing.py --tmx-file ./resources/tmx-file.tmx --output ./results/output
+```
+Instead of building image you can simply pool it. But don't forget to change the run commands later on.
+```
+docker pull niklss/ml-engineer-coding-challenge
 ```
 
 If you are interested in deeper code understanding look at the code. It has comments.  

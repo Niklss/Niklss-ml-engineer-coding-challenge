@@ -52,7 +52,7 @@ if __name__ == "__main__":
         similar = SimilarEmbedding(1)  # Init with
         data = pq.read_table(files[0])  #
         if args.limit:
-            data = data.slice(length=200)
+            data = data.slice(length=args.limit)
 
         dict_data = data.to_pydict()
         mask = [similar(row) for row in zip(*dict_data.values())]
