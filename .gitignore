@@ -131,5 +131,5 @@ cython_debug/
 .idea/
 .helm/
 
-.results/
-.resources/
+results/*
+resources/*

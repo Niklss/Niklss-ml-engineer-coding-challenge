@@ -63,6 +63,10 @@ The prototype consists of 4 parts:
 3. Remove the rows from the data which thresholds are less than defined.
 4. Write the resulting file.
 
+To run the code localy firstly you install laser. Run this command in the root directory
+```
+bash install_laser.sh
+```
 To run the code use this command
 ```
 python laser_cleaner.py --dataset-file ./results/output/output-0.parquet --output ./results/cleaned --limit 300

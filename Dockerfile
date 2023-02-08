@@ -19,9 +19,7 @@ ENV TZ Europe/Moscow
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY ./src ./src
-RUN export LASER=$PWD/src/laser
-RUN bash src/laser/install_models.sh
-RUN bash src/laser/install_external_tools.sh
+RUN bash install_laser.sh
 
 COPY ./tmx_preprocessing.py ./tmx_preprocessing.py
 COPY ./laser_cleaner.py ./laser_cleaner.py
