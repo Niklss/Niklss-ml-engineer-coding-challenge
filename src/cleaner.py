@@ -8,6 +8,7 @@ class MTCleaner(ABC):
     This class performs an abstraction of any future cleaning function that might be easily added to MT text
     preprocessing pipeline
     """
+
     @staticmethod
     @abstractmethod
     def __call__(text: str, *args, **kwargs) -> str:
@@ -24,6 +25,7 @@ class HTMLTags(MTCleaner):
     """
     This class performs a html tag cleaning
     """
+
     @staticmethod
     def __call__(text, *args, **kwargs):
         return re.sub(r'&.*?;', '', text)
@@ -33,6 +35,7 @@ class XMLTags(MTCleaner):
     """
     This class performs a xml tag cleaning
     """
+
     @staticmethod
     def __call__(text, *args, **kwargs):
         return re.sub(r'<.*?>', '', text)
@@ -42,6 +45,7 @@ class MarkupTags(MTCleaner):
     """
     This class performs a markup tag cleaning
     """
+
     @staticmethod
     def __call__(text, *args, **kwargs):
         return re.sub(r'%\w+_\w+%', '', text)
@@ -51,6 +55,7 @@ class Strip(MTCleaner):
     """
     This class performs stripping
     """
+
     @staticmethod
     def __call__(text, *args, **kwargs):
         return text.strip()
@@ -60,6 +65,7 @@ class MTCleanerPipeline:
     """
     This class performs a cleaning over any iterable. To initialize a class you need to pass a list of MTCleaner's
     """
+
     def __init__(self, cleaners: List[MTCleaner]):
         """
         :param cleaners: MTCleaners that will clean the text

@@ -79,8 +79,8 @@ class TMXCleaner:
         :param file_index: Index of the file.
         :return:
         """
-        cleaned_rows = [self.pipeline(row) for row in data]
-        self._write(cleaned_rows, file_index)
+        cleaned_rows = [x for row in data if (x := self.pipeline(row)) and all(x)]
+        self._write(cleaned_rows, file_index)  # Write dataset under it's id
 
     @staticmethod
     def chunks(iterable, size=1000):
@@ -103,16 +103,15 @@ class TMXCleaner:
 
         logging.info(msg='Started cleaning')
 
-        with Pool(processes=self.processes) as pool:
+        with Pool(processes=self.processes) as pool:  # Creating pool of workers
             counter = 0
             slice = True
-            while slice:
+            while slice:  # Check on dataset end
                 input_slices = [(list(self.chunks(file_generator, size=self.chunk_size)), counter + i) for i in
-                                range(self.processes)]
-                self._clean_and_write(*input_slices[0])
+                                range(self.processes)]  # Slices of rows with file_id for parquet dataset
                 [pool.apply_async(self._clean_and_write, args=slice) for slice in input_slices if slice[0]]
                 counter += self.processes
-                slice = input_slices[-1][0]
+                slice = input_slices[-1][0]  # Check if empty
                 logging.info(msg=f'Processed {counter * self.chunk_size} rows.')
 
 
