@@ -41,7 +41,8 @@ is possible to get rid of memory leaking, but in this solution it strongly affec
 the performance.
 
 ## II. Research and Prototyping
-For this part you are required to install some dependencies
+For this part you are required to install some dependencies that are not 
+presented in requirements.txt
 ```
 fairseq==0.12.2
 pytorch==1.13.1
@@ -63,7 +64,8 @@ The prototype consists of 4 parts:
 3. Remove the rows from the data which thresholds are less than defined.
 4. Write the resulting file.
 
-To run the code localy firstly you install laser. Run this command in the root directory
+To run the code localy firstly you install laser. Run this command in the root 
+directory
 ```
 bash install_laser.sh
 ```
